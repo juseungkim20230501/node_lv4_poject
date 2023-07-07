@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize, Users, Posts } = require('./models');
+const { sequelize } = require('./models');
 const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;

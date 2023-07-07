@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
         .json({ errorMessage: '패스워드가 일치하지 않습니다.' });
     }
 
-    const isExistUser = await Users.findOne({ nickname });
+    const isExistUser = await Users.findOne({ where: { nickname } });
     if (isExistUser) {
       return res.status(412).json({ errorMessage: '중복된 닉네임입니다.' });
     }
