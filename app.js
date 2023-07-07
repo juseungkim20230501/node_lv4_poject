@@ -7,12 +7,13 @@ const port = 3000;
 const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
+const commentRouter = require('./routes/comments');
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/', [postsRouter, usersRouter, loginRouter]);
+app.use('/', [postsRouter, usersRouter, loginRouter, commentRouter]);
 
 app.listen(port, async () => {
   console.log(port, '포트로 서버가 열렸습니다.');
