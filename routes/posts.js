@@ -12,7 +12,7 @@ router.get('/posts', async (req, res) => {
     return {
       postId: value.postId,
       userId: value.UserId,
-      nickname: value.Nickname,
+      nickname: value.nickname,
       title: value.title,
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
