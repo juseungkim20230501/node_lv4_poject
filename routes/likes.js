@@ -44,7 +44,7 @@ router.get('/posts/like', authMiddleware, async (req, res) => {
       include: [
         {
           model: Posts,
-          attributes: ['title', 'createdAt'],
+          attributes: ['nickname', 'title', 'createdAt', 'updatedAt'],
           include: {
             model: Likes,
             attributes: [
@@ -57,6 +57,7 @@ router.get('/posts/like', authMiddleware, async (req, res) => {
         },
       ],
       group: ['PostId'],
+      order: [[sequelize.literal('COUNT(Likes.UserId)'), 'DESC']],
       raw: true,
       nest: true,
     });

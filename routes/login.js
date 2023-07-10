@@ -24,13 +24,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// 로그아웃 API
-router.post('/logout', (req, res) => {
-  // 쿠키에서 accessToken과 refreshToken을 제거합니다.
-  res.clearCookie('Authorization');
-
-  // 성공 메시지를 응답합니다.
-  res.json({ message: '로그아웃되었습니다.' });
-});
-
 module.exports = router;
