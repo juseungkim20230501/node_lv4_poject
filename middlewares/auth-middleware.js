@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
 
   try {
     const { userId } = jwt.verify(loginToken, 'letsgo-doge-key');
-    const user = await Users.findOne({ userId });
+    const user = await Users.findOne({ where: { userId } });
     res.locals.user = user;
     next();
   } catch (error) {

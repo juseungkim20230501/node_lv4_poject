@@ -15,11 +15,11 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', [
+  likesRouter,
   postsRouter,
   usersRouter,
   loginRouter,
   commentsRouter,
-  likesRouter,
 ]);
 
 app.listen(port, async () => {

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth-middleware');
-const { Posts, Likes } = require('../models');
+const { Posts, Likes, sequelize } = require('../models');
 
 // 게시글 좋아요, 좋아요 취소
-router.put('/posts/:postId/likes', authMiddleware, async (req, res) => {
+router.put('/posts/:postId/like', authMiddleware, async (req, res) => {
   const { userId } = res.locals.user;
   const { postId } = req.params;
 
@@ -35,14 +35,39 @@ router.put('/posts/:postId/likes', authMiddleware, async (req, res) => {
   }
 });
 
-// // 좋아요 게시글 조회
-// router.get('/posts/likes', authMiddleware, async (req, res) => {
-//   const { userId } = res.locals.user;
-//   const likes = await Likes.findAll({ where: { UserId: userId }});
+// 좋아요 게시글 조회
+router.get('/posts/like', authMiddleware, async (req, res) => {
+  try {
+    const { userId } = res.locals.user;
+    const likedPosts = await Likes.findAll({
+      where: { UserId: userId },
+      include: [
+        {
+          model: Posts,
+          attributes: ['title', 'createdAt'],
+          include: {
+            model: Likes,
+            attributes: [
+              [
+                sequelize.fn('COUNT', sequelize.col('Likes.UserId')),
+                'likeCount',
+              ],
+            ],
+          },
+        },
+      ],
+      group: ['PostId'],
+      raw: true,
+      nest: true,
+    });
 
-//   if (likes) {
-//     const posts ()
-//   }
-// });
+    res.status(200).json(likedPosts);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ errorMessage: '좋아요한 게시물 조회에 실패하였습니다.' });
+  }
+});
 
 module.exports = router;
