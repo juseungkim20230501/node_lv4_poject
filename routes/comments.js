@@ -16,7 +16,7 @@ router.post('/posts/:postId/comments', authMiddleware, async (req, res) => {
         .json({ errorMessage: '게시글이 존재하지 않습니다.' });
     }
     if (!comment) {
-      return res.status(412).json({ errorMessage: '댓글을 입력해 주세요.' });
+      return res.status(400).json({ errorMessage: '댓글을 입력해 주세요.' });
     }
     await Comments.create({
       PostId: postId,
@@ -91,7 +91,7 @@ router.put(
           .json({ errorMessage: '댓글의 수정 권한이 없습니다.' });
       }
       if (!comment) {
-        return res.status(412).json({ errorMessage: '댓글을 입력해 주세요.' });
+        return res.status(400).json({ errorMessage: '댓글을 입력해 주세요.' });
       }
       await Comments.update({ comment }, { where: { commentId } });
       return res.status(200).json({ message: '댓글을 수정하였습니다.' });
@@ -134,6 +134,7 @@ router.delete(
       res.status(200).json({ message: '댓글이 삭제 되었습니다.' });
     } catch (error) {
       console.error(error);
+      res.status(500).json({ errorMessage: '댓글 삭제에 실패하였습니다.' });
     }
   }
 );
